@@ -85,6 +85,16 @@ def build_exe():
     save_settings()
     
     try:
+        # Build exe using PyInstaller
+        output_dir = os.path.join(builder_dir, 'dist')
+        build_dir = os.path.join(builder_dir, 'build')
+        
+        # Clean up old builds to ensure fresh build
+        if os.path.exists(output_dir):
+            shutil.rmtree(output_dir)
+        if os.path.exists(build_dir):
+            shutil.rmtree(build_dir)
+        
         # Create temp directory
         temp_dir = tempfile.mkdtemp(prefix='discpy_build_')
         temp_src = os.path.join(temp_dir, 'src')

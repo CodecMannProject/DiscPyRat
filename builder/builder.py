@@ -32,7 +32,7 @@ def load_settings():
         'discord_bot_token': 'your_discord_bot_token_here',
         'discord_server_id': 'your_discord_server_id_here',
         'discord_alerts_channel_id': 'your_discord_channel_id_here',
-        'icon': ''
+        'icon': 'default.ico'
     }
 
 def save_settings():
@@ -219,7 +219,7 @@ ttk.Label(env_frame, text="Icon File (optional):").pack(anchor='w')
 icon_frame = ttk.Frame(env_frame)
 icon_frame.pack(anchor='w', pady=(0, 10), fill=tk.X)
 icon_entry = ttk.Entry(icon_frame, width=35)
-icon_entry.insert(0, settings.get('icon', ''))
+icon_entry.insert(0, settings.get('icon', 'default.ico'))
 icon_entry.pack(side=tk.LEFT, padx=(0, 5))
 ttk.Button(icon_frame, text="Browse", command=select_icon_file).pack(side=tk.LEFT)
 

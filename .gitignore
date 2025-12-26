@@ -2,4 +2,4 @@ venv
 DiscPy.spec
 build
 builder/dist
-builder/build-settings.json
+builder/build_settings.json

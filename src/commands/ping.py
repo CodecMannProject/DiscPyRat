@@ -2,6 +2,7 @@ from discord.ext import commands
 
 # Command metadata
 COMMAND_NAME = "ping"
+DESCRIPTION = "Check bot latency"
 CATEGORY = "utilities"
 ORDER = 1
 

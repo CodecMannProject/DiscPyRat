@@ -226,12 +226,16 @@ settings = load_settings()
 for cmd_file in command_files:
     cmd_name = os.path.splitext(cmd_file)[0]
     var = tk.BooleanVar(value=settings['commands'].get(cmd_name, True))
-    chk = ttk.Checkbutton(commands_frame, text=cmd_name, variable=var)
-    # Disable checkbox and check it if it's a mandatory command
+    
+    # Create text label based on whether command is mandatory
     if cmd_name in MANDATORY_COMMANDS:
         var.set(True)
-        chk.config(state='disabled')
-        chk = ttk.Checkbutton(commands_frame, text=f"{cmd_name} (mandatory)", variable=var, state='disabled')
+        cmd_label = f"{cmd_name} (mandatory)"
+        chk = ttk.Checkbutton(commands_frame, text=cmd_label, variable=var, state='disabled')
+    else:
+        cmd_label = cmd_name
+        chk = ttk.Checkbutton(commands_frame, text=cmd_label, variable=var)
+    
     chk.pack(anchor='w')
     command_vars[cmd_name] = var
 

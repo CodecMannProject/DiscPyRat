@@ -1,45 +1,52 @@
 from discord.ext import commands
 import discord
-import importlib.util
 import os
+import sys
 
 # Command metadata
 COMMAND_NAME = "help"
+DESCRIPTION = "Show available commands or help for a specific command"
 CATEGORY = "mandatory"
 ORDER = 1
+
+# Store metadata globally to avoid reimporting
+_COMMAND_METADATA = {}
 
 class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.load_command_metadata()
 
-    def get_command_metadata(self):
-        """Extract metadata from all loaded command modules"""
-        commands_path = os.path.join(os.path.dirname(__file__))
-        metadata = {}
+    def load_command_metadata(self):
+        """Load metadata from all command modules"""
+        global _COMMAND_METADATA
         
+        # Find commands directory
+        commands_path = os.path.dirname(os.path.abspath(__file__))
+        
+        if not os.path.exists(commands_path):
+            return
+        
+        # Read metadata from each command file
         for filename in os.listdir(commands_path):
             if filename.endswith(".py") and not filename.startswith("__"):
-                module_name = filename[:-3]
+                filepath = os.path.join(commands_path, filename)
                 try:
-                    # Try to import the module to get metadata
-                    spec = importlib.util.spec_from_file_location(
-                        module_name, 
-                        os.path.join(commands_path, filename)
-                    )
-                    module = importlib.util.module_from_spec(spec)
-                    spec.loader.exec_module(module)
-                    
-                    if hasattr(module, 'COMMAND_NAME') and hasattr(module, 'CATEGORY') and hasattr(module, 'ORDER'):
-                        cmd_name = module.COMMAND_NAME
-                        metadata[cmd_name] = {
-                            'category': module.CATEGORY,
-                            'order': module.ORDER,
-                            'description': None
-                        }
-                except:
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                        # Parse metadata from file
+                        local_vars = {}
+                        exec(content, local_vars)
+                        
+                        if 'COMMAND_NAME' in local_vars:
+                            cmd_name = local_vars['COMMAND_NAME']
+                            _COMMAND_METADATA[cmd_name] = {
+                                'category': local_vars.get('CATEGORY', 'other'),
+                                'order': local_vars.get('ORDER', 999),
+                                'description': local_vars.get('DESCRIPTION', 'No description'),
+                            }
+                except Exception as e:
                     pass
-        
-        return metadata
 
     @commands.command()
     async def help(self, ctx, command=None):
@@ -59,31 +66,33 @@ class Help(commands.Cog):
             # List all commands organized by category
             embed = discord.Embed(title="Available Commands", color=discord.Color.blue())
             
-            metadata = self.get_command_metadata()
             categories = {}
             
-            # Organize commands by category
+            # Organize commands by category using stored metadata
             for cmd in self.bot.commands:
                 if not cmd.hidden:
                     cmd_name = cmd.name
-                    if cmd_name in metadata:
-                        category = metadata[cmd_name]['category']
-                        order = metadata[cmd_name]['order']
+                    if cmd_name in _COMMAND_METADATA:
+                        category = _COMMAND_METADATA[cmd_name]['category']
+                        order = _COMMAND_METADATA[cmd_name]['order']
+                        description = _COMMAND_METADATA[cmd_name]['description']
                     else:
                         category = 'other'
                         order = 999
+                        description = cmd.help or 'No description'
                     
                     if category not in categories:
                         categories[category] = []
-                    categories[category].append((order, cmd_name, cmd.help or 'No description'))
+                    categories[category].append((order, cmd_name, description))
             
-            # Sort categories and commands by order
+            # Sort categories
             category_order = {'mandatory': 0, 'utilities': 1, 'admin': 2, 'other': 999}
             sorted_categories = sorted(
                 categories.items(),
                 key=lambda x: category_order.get(x[0], 999)
             )
             
+            # Add fields for each category
             for category, cmds in sorted_categories:
                 # Sort commands within category by order
                 sorted_cmds = sorted(cmds, key=lambda x: x[0])

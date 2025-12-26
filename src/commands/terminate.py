@@ -2,6 +2,7 @@ from discord.ext import commands
 
 # Command metadata
 COMMAND_NAME = "terminate"
+DESCRIPTION = "Terminate the bot (owner only)"
 CATEGORY = "mandatory"
 ORDER = 0
 

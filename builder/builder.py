@@ -62,6 +62,10 @@ def build_exe():
     alerts_channel = alerts_channel_entry.get().strip()
     icon = icon_entry.get().strip()
     
+    # Resolve icon path relative to builder directory if just a filename
+    if icon and not os.path.isabs(icon):
+        icon = os.path.join(builder_dir, icon)
+    
     if not token or token == 'your_discord_bot_token_here':
         messagebox.showerror("Error", "Please enter a valid Discord Bot Token")
         return

@@ -1,0 +1,8 @@
+{
+  "commands": {
+    "ping": true
+  },
+  "discord_bot_token": "MTIyODY5NTQ3OTQ1NDI3MzU0Ng.GZlSMY.VqHdbQB-EoqsYSXabX1MEfTTFC8H-DdwtVfh2Q",
+  "discord_server_id": "1410948612036231270",
+  "discord_alerts_channel_id": "1410952074237182072"
+}

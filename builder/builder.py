@@ -126,9 +126,6 @@ DISCORD_ALERTS_CHANNEL_ID="{alerts_channel}"
             '--onefile',
             '--name', 'DiscPy',
             '--distpath', output_dir,
-            '--build-temp', os.path.join(temp_dir, 'build'),
-            '--specpath', os.path.join(temp_dir, 'spec'),
-            '--workpath', os.path.join(temp_dir, 'work'),
             '--add-data', f'{temp_src}{os.pathsep}src',
             wrapper_file
         ]

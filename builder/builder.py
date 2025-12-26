@@ -97,15 +97,15 @@ DISCORD_ALERTS_CHANNEL_ID="{alerts_channel}"
         
         # Create a wrapper script that will be the entry point
         wrapper_content = '''import os
-                            import sys
+import sys
 
-                            # Add the temp src to path
-                            sys.path.insert(0, os.path.dirname(__file__))
+# Add the temp src to path
+sys.path.insert(0, os.path.dirname(__file__))
 
-                            # Run the bot
-                            from index import bot, TOKEN
-                            bot.run(TOKEN)
-                        '''
+# Run the bot
+from index import bot, TOKEN
+bot.run(TOKEN)
+'''
         wrapper_file = os.path.join(temp_dir, 'main.py')
         with open(wrapper_file, 'w') as f:
             f.write(wrapper_content)

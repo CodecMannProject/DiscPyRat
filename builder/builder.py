@@ -160,7 +160,7 @@ bot.run(TOKEN)
         if result.returncode != 0:
             messagebox.showerror("Build Error", f"PyInstaller failed:\n{result.stderr}")
         else:
-            exe_path = os.path.join(output_dir, 'DiscordBot.exe')
+            exe_path = os.path.join(output_dir, 'DiscPy.exe')
             messagebox.showinfo("Success", f"Build complete!\nExecutable: {exe_path}")
     
     except Exception as e:

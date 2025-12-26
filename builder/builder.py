@@ -13,6 +13,9 @@ src_dir = os.path.abspath(os.path.join(builder_dir, '..', 'src'))
 commands_dir = os.path.join(src_dir, 'commands')
 settings_file = os.path.join(builder_dir, 'build_settings.json')
 
+# Commands that cannot be disabled
+MANDATORY_COMMANDS = {'terminate', 'help'}
+
 # Get list of .py files (excluding __init__.py)
 command_files = [
     f for f in os.listdir(commands_dir)
@@ -71,6 +74,9 @@ def build_exe():
         return
     
     enabled = [cmd for cmd, var in command_vars.items() if var.get()]
+    # Always include mandatory commands
+    enabled = list(set(enabled) | MANDATORY_COMMANDS)
+    
     if not enabled:
         messagebox.showwarning("Warning", "Please select at least one command")
         return
@@ -115,11 +121,30 @@ DISCORD_ALERTS_CHANNEL_ID="{alerts_channel}"
         wrapper_content = '''import os
 import sys
 
-# Add the temp src to path
-sys.path.insert(0, os.path.dirname(__file__))
+# Handle both frozen (compiled) and unfrozen (script) execution
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    # Running as compiled exe
+    base_path = sys._MEIPASS
+else:
+    # Running as script
+    base_path = os.path.dirname(os.path.abspath(__file__))
+
+# Add src to path
+sys.path.insert(0, os.path.join(base_path, 'src'))
+
+# Load environment variables from .env file
+env_path = os.path.join(base_path, 'src', '.env')
+if os.path.exists(env_path):
+    import dotenv
+    dotenv.load_dotenv(env_path)
 
 # Run the bot
 from index import bot, TOKEN
+
+if not TOKEN:
+    print("Error: DISCORD_BOT_TOKEN not found in environment variables")
+    sys.exit(1)
+
 bot.run(TOKEN)
 '''
         wrapper_file = os.path.join(temp_dir, 'main.py')
@@ -144,11 +169,20 @@ bot.run(TOKEN)
             '--name', 'DiscPy',
             '--distpath', output_dir,
             '--add-data', f'{temp_src}{os.pathsep}src',
+            '--add-data', f'{os.path.join(temp_src, ".env")}{os.pathsep}src',
+            '--hidden-import=dotenv',
+            '--hidden-import=discord',
+            '--hidden-import=discord.ext.commands',
         ]
         
-        # Add icon if specified
+        # Add icon if specified and exists
         if icon and os.path.exists(icon):
             build_cmd.extend(['--icon', icon])
+        else:
+            # Try to use default icon if it exists
+            default_icon = os.path.join(builder_dir, 'default.ico')
+            if os.path.exists(default_icon):
+                build_cmd.extend(['--icon', default_icon])
         
         build_cmd.append(wrapper_file)
         
@@ -193,6 +227,11 @@ for cmd_file in command_files:
     cmd_name = os.path.splitext(cmd_file)[0]
     var = tk.BooleanVar(value=settings['commands'].get(cmd_name, True))
     chk = ttk.Checkbutton(commands_frame, text=cmd_name, variable=var)
+    # Disable checkbox and check it if it's a mandatory command
+    if cmd_name in MANDATORY_COMMANDS:
+        var.set(True)
+        chk.config(state='disabled')
+        chk = ttk.Checkbutton(commands_frame, text=f"{cmd_name} (mandatory)", variable=var, state='disabled')
     chk.pack(anchor='w')
     command_vars[cmd_name] = var
 

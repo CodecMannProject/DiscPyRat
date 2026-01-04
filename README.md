@@ -1,4 +1,5 @@
-[![Python ver. >3.6](https://shields.io/badge/python-3.6+-blue)](https://www.python.org/downloads/) ![Last release](https://img.shields.io/github/v/tag/CodecMannProject/DiscPyRat?label=last%20release) ![Commits since release](https://img.shields.io/github/commits-since/CodecMannProject/DiscPyRat/latest?label=commits%20since%20release)
+[![Python ver. >3.6](https://shields.io/badge/python-3.6+-blue)](https://www.python.org/downloads/) ![Last release](https://img.shields.io/github/v/tag/CodecMannProject/DiscPyRat?label=last%20release) ![Commits since release](https://img.shields.io/github/commits-since/CodecMannProject/DiscPyRat/v0.1?label=commits%20since%20release)
+****
 
 
 # DiscPy Rat

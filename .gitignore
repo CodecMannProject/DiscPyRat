@@ -1,4 +1,5 @@
 venv
+tests
 DiscPy.spec
 build
 builder/dist

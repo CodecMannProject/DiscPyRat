@@ -1,13 +1,13 @@
 [![Python ver. >3.6](https://shields.io/badge/python-3.6+-blue)](https://www.python.org/downloads/) ![Last release](https://img.shields.io/github/v/tag/CodecMannProject/DiscPyRat?label=last%20release) ![Commits since release](https://img.shields.io/github/commits-since/CodecMannProject/DiscPyRat/v0.1?label=commits%20since%20release)
 
------
+------
 
 <span align='center'>
   <h1> ! ---> Disclaimer <--- ! </h1>
    <blockquote><h4> Information and code provided on this repository are for educational purposes only. The creator is no way responsible for any direct or indirect damage caused due to the misusage of the information. Everything you do, you are doing at your own risk and responsibility. </h4></blockquote>
 </span>
 
------
+------
 
 <div align='center'>
 

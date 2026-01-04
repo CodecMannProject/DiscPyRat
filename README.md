@@ -4,7 +4,9 @@
 
 <span align='center'>
   <h1> ! ---> Disclaimer <--- ! </h1>
-   <blockquote><h4> Information and code provided on this repository are for educational purposes only. The creator is no way responsible for any direct or indirect damage caused due to the misusage of the information. Everything you do, you are doing at your own risk and responsibility. </h4></blockquote>
+   <blockquote><h4> Information and code provided on this repository are for educational purposes only. 
+   The creator is no way responsible for any direct or indirect damage caused due to the misusage of the information. 
+   Everything you do, you are doing at your own risk and responsibility. </h4></blockquote>
 </span>
 
 --------
@@ -17,7 +19,7 @@
 
 #### `Developer-friendly discord remote administration tool controlled with Discord built on Python.`
 
-#### `Dont download or buy from anywhere else except this repository.` 
+#### `Dont download or buy from anyone else except this repository.` 
 #### `This project is solely open source, without any premium versions!`
 
 </div>

@@ -3,7 +3,7 @@ from discord.ext import commands
 # Command metadata
 COMMAND_NAME = "template"
 DESCRIPTION = "General template for new commands"
-CATEGORY = "utilities" # change this to reflect the command category
+CATEGORY = "utilities" # change this to reflect the command category, change to "mandatory" for core commands
 ORDER = 2 # change this to reflect new order in help command
 
 class Template(commands.Cog):

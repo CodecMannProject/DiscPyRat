@@ -26,4 +26,6 @@ to discuss what you would like to change.
 
 ---
 
-![Icon](https://i.ibb.co/LzDB1M6f/icon.png)
+| |
+|---|
+| <img width="1024" height="1024" alt="icon" src="https://github.com/user-attachments/assets/e0b48ee6-36b4-4416-afb7-ecb2839f0c4c" /> |

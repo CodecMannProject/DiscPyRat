@@ -18,7 +18,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-Use the fresh-new builder located in ```builder/builder.py```!
+Use the fresh-new builder located in [`builder/builder.py`](https://github.com/CodecMannProject/DiscPyRat/blob/master/builder/builder.py)!
 
 ## Contributing
 

@@ -25,7 +25,7 @@ Use the fresh-new builder located in ```builder/builder.py```!
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
 
-If you want to add new commands, please check out [general command template](https://github.com/CodecMannProject/DiscPyRat/blob/master/command-template.py).
+If you want to add new commands, please check out our [general command template](https://github.com/CodecMannProject/DiscPyRat/blob/master/command-template.py).
 
 ---
 

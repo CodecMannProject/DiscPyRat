@@ -102,5 +102,5 @@ class Help(commands.Cog):
             embed.set_footer(text="Use $help <command> for more info on a specific command")
             await ctx.send(embed=embed)
 
-def setup(bot):
-    bot.add_cog(Help(bot))
+async def setup(bot):
+    await bot.add_cog(Help(bot))

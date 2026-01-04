@@ -22,24 +22,26 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 # Initialize bot
-bot = commands.Bot(command_prefix="$", intents=intents)
+bot = commands.Bot(command_prefix="$", intents=intents, help_command=None)
+extensions_loaded = False
 
 @bot.event
 async def on_ready():
+    global extensions_loaded
     print(f'We have logged in as {bot.user}')
-
-@bot.setup_hook
-async def load_extensions():
-    # Load all cogs from the commands folder
-    commands_path = os.path.join(os.path.dirname(__file__), "commands")
-    if os.path.exists(commands_path):
-        for filename in os.listdir(commands_path):
-            if filename.endswith(".py") and not filename.startswith("__"):
-                try:
-                    await bot.load_extension(f"commands.{filename[:-3]}")
-                    print(f"Loaded command: {filename[:-3]}")
-                except Exception as e:
-                    print(f"Failed to load command {filename[:-3]}: {e}")
+    
+    if not extensions_loaded:
+        extensions_loaded = True
+        # Load all cogs from the commands folder
+        commands_path = os.path.join(os.path.dirname(__file__), "commands")
+        if os.path.exists(commands_path):
+            for filename in os.listdir(commands_path):
+                if filename.endswith(".py") and not filename.startswith("__"):
+                    try:
+                        await bot.load_extension(f"commands.{filename[:-3]}")
+                        print(f"Loaded command: {filename[:-3]}")
+                    except Exception as e:
+                        print(f"Failed to load command {filename[:-3]}: {e}")
 
 if __name__ == "__main__":
     bot.run(TOKEN)

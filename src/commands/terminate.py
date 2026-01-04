@@ -17,5 +17,5 @@ class Terminate(commands.Cog):
         await ctx.send("Terminating bot...")
         await self.bot.close()
 
-def setup(bot):
-    bot.add_cog(Terminate(bot))
+async def setup(bot):
+    await bot.add_cog(Terminate(bot))
